@@ -1,0 +1,363 @@
+/* ============================================================
+   BOCADILLO FLOTANTE — CARRITO DESPLEGABLE
+   ============================================================ */
+.cart-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Rediseño del contenedor a formato Bocadillo Popover */
+.cart-popover {
+  position: absolute;
+  top: calc(100% + 12px); /* Separación exacta del botón */
+  right: 0;
+  width: 340px; /* Ancho cómodo para un bocadillo de carrito */
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px -5px rgba(22, 24, 29, 0.08), 0 4px 12px -2px rgba(22, 24, 29, 0.04);
+  z-index: 100010;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+/* Clase activa al dar clic */
+.cart-dropdown-wrapper.open .cart-popover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Flecha/Triángulo del bocadillo que apunta al botón del carrito */
+.cart-popover::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 14px; /* Centrado con el ícono del carrito */
+  width: 12px;
+  height: 12px;
+  background: var(--color-bg);
+  border-left: 1px solid var(--color-line);
+  border-top: 1px solid var(--color-line);
+  transform: rotate(45deg);
+  z-index: 2;
+}
+
+/* Cabecera del Bocadillo */
+.cart-popover-header {
+  padding: 16px 16px 12px 16px;
+  border-bottom: 1px solid var(--color-line);
+}
+.cart-popover-header h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+/* Cuerpo con scroll interno por si hay varios productos */
+.cart-popover-body {
+  padding: 16px;
+  max-height: 280px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Estilos de los ítems internos (Alineación compacta) */
+.cart-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-line);
+}
+.cart-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.cart-item-img {
+  width: 55px;
+  height: 55px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  background: var(--color-bg-soft);
+}
+.cart-item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cart-item-title {
+  font-weight: 600;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+.cart-item-price {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+.cart-item-qty {
+  font-size: 0.75rem;
+  color: var(--color-ink-soft);
+}
+.btn-remove-item {
+  font-size: 0.75rem;
+  color: #DC2626; /* Color de alerta/remoción */
+  text-decoration: underline;
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Footer del bocadillo */
+.cart-popover-footer {
+  padding: 14px 16px;
+  background: var(--color-bg-soft);
+  border-top: 1px solid var(--color-line);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+.cart-subtotal-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--color-ink);
+}
+.btn-checkout {
+  width: 100%;
+  background: var(--color-brand);
+  color: #FFFFFF;
+  padding: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn-checkout:hover {
+  background: var(--color-brand-dark);
+}
+
+/* RESPONSIVO MÓVIL */
+@media (max-width: 760px) {
+  .cart-popover {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+  }
+  .cart-dropdown-wrapper.open .cart-popover {
+    transform: translateY(0);
+  }
+  .cart-popover::before {
+    display: none; /* Quitamos la flecha en móvil al volverse barra inferior */
+  }
+}
+
+
+/* ============================================================
+   SELECTOR DE IDIOMA
+   ============================================================ */
+.lang-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-btn {
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  background: none;
+  border: 1px solid var(--color-line);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.lang-btn:hover {
+  background: var(--color-bg-soft);
+  border-color: var(--color-line-strong);
+}
+
+.lang-btn .lang-chevron {
+  width: 12px;
+  height: 12px;
+  color: var(--color-ink-soft);
+  transition: transform 0.2s ease;
+}
+
+/* Estado abierto */
+.lang-dropdown-wrapper.open .lang-btn .lang-chevron {
+  transform: rotate(180deg);
+}
+
+/* Popover desplegable */
+.lang-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 25px -5px rgba(22, 24, 29, 0.08);
+  min-width: 130px;
+  padding: 6px 0;
+  z-index: 90;
+  display: none;
+}
+
+.lang-dropdown-wrapper.open .lang-popover {
+  display: block;
+}
+
+.lang-option {
+  display: block;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-ink-soft);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.lang-option:hover {
+  background: var(--color-bg-soft);
+  color: var(--color-ink);
+}
+
+.lang-option.active {
+  color: var(--color-brand);
+  font-weight: 700;
+  background: #F0F4FA;
+}
+
+
+/* ============================================================
+   ESTILOS MENU CUENTA DE USUARIO (LOGUEADO)
+   ============================================================ */
+.user-logged-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 4px;
+}
+
+.user-welcome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px 12px 12px;
+}
+
+.user-avatar-mini {
+  width: 36px;
+  height: 36px;
+  background: #E0E7FF;
+  color: var(--color-brand);
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-meta-nav {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.nav-username {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-ink);
+}
+
+.nav-user-role {
+  font-size: 0.75rem;
+  color: var(--color-ink-soft);
+  font-weight: 500;
+}
+
+.nav-divider {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin: 8px 0;
+}
+
+/* Enlaces del Listado */
+.nav-account-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-account-item {
+  display: flex;
+  align-items: center; /* Centra verticalmente el ícono con el texto */
+  gap: 10px;           /* Espacio de separación constante */
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-ink-soft);
+  text-decoration: none;
+}
+
+.nav-account-item:hover {
+  background: var(--color-bg-soft);
+  color: var(--color-ink);
+}
+
+/* Estilo para íconos en línea (Mantenidos limpios con SVG plano) */
+.icon-nav {
+  width: 16px;          /* Tamaño horizontal fijo */
+  height: 16px;         /* Tamaño vertical fijo */
+  min-width: 16px;      /* Evita que se colapse */
+  flex-shrink: 0;       /* Garantiza que no se deforme en pantallas chicas */
+  
+  stroke: currentColor;
+  stroke-width: 2px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--color-ink-soft);
+}
+
+.nav-account-item:hover .icon-nav {
+  color: var(--color-ink);
+}
+
+/* Opción específica de Cierre de Sesión */
+.nav-account-links .logout-link {
+  color: #DC2626; /* Tonalidad roja destructiva coherente */
+}
+.nav-account-links .logout-link:hover {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+.nav-account-links .logout-link:hover .icon-nav {
+  color: #B91C1C;
+}

@@ -1,0 +1,36 @@
+RewriteEngine On
+
+# Evita que la regla se aplique si el archivo o carpeta ya existen físicamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Captura lo que viene después de /productos/ y lo pasa como parámetro
+
+RewriteRule ^comments/?$ comments.php [L,QSA]
+RewriteRule ^aboutus/?$ aboutus.php [L,QSA]
+RewriteRule ^contact/?$ contact.php [L,QSA]
+
+RewriteRule ^privacy/?$ privacy.php [L,QSA]
+RewriteRule ^conditions/?$ conditions.php [L,QSA]
+RewriteRule ^guarantees/?$ guarantees.php [L,QSA]
+RewriteRule ^cart/?$ carrito.php [L,QSA]
+RewriteRule ^checkout/?$ checkout.php [L,QSA]
+RewriteRule ^tnks/?$ tnks.php [L,QSA]
+
+RewriteRule ^register/?$ register.php [L,QSA]
+RewriteRule ^recovery/?$ recovery.php [L,QSA]
+RewriteRule ^reset/?$ reset.php [L,QSA]
+RewriteRule ^logout/?$ logout.php [L,QSA]
+
+
+
+RewriteRule ^product/([^/]+)/?$ product.php?Id=$1 [L,QSA]
+# 1. Regla para cuando vienen Categoria y Subcategoria
+RewriteRule ^products/([^/]+)/([^/]+)/?$ products.php?Id=$1&Sub=$2 [L,QSA]
+
+# 2. Regla para cuando SOLO viene la Categoria (Tu regla original)
+RewriteRule ^products/([^/]+)/?$ products.php?Id=$1 [L,QSA]
+
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME}\.php -f
+#RewriteRule ^([^/]+)$ $1.php [L]
