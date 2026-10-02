@@ -123,7 +123,7 @@
           }
           else{
             echo '
-              <span class="detail-price-sale">$$'.number_format($producto['SalePrice'], 2, ".", ",").'</span>
+              <span class="detail-price-sale">$'.number_format($producto['SalePrice'], 2, ".", ",").'</span>
             ';
           }
         ?>

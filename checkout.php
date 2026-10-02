@@ -12,10 +12,8 @@
     require_once 'head.php'; 
 
 
-    $api_url = URL_API."quote_account";
-    //$data = json_encode(['token' => $token]);
-    $data ='';
-    $account = json_decode(API($jwt,$api_url,$data,'GET'), true);    
+
+  
 
     $api_url = URL_API."Traducciones_web_sales";
     $data = json_encode(['program' => "checkout"]);
@@ -153,6 +151,11 @@
 <?php 
   require_once ('nav.php');
   $Traducciones = $TrdRsp;
+
+  $api_url = URL_API."quote_account";
+  //$data = json_encode(['token' => $token]);
+  $data ='';
+  $account = json_decode(API($jwt,$api_url,$data,'GET'), true);  
 ?>
 
 <button class="mobile-summary-toggle" id="mobileSummaryToggle" aria-expanded="false">
@@ -234,6 +237,7 @@
             <input type="hidden" name="cart_json"   id="cart_json" value="">
             <input type="hidden" name="id_client"   id="id_client" value="">
             <input type="hidden" name="id_address"  id="id_address" value="">
+            <input type="hidden" name="select_tax"  id="select_tax" value="">
 
 
 <div id="holder-contact-fields" style="margin-bottom: 24px;">
@@ -360,15 +364,20 @@ $Traducciones = $TrdRsp;
     
     <div class="summary-items-list" id="checkoutItemsList">
       </div>
-<div class="summary-row">
-      <span class="summary-row-label"><?= Trd(20) ?></span>
-      <span id="checkoutSubtotal">$0.00</span>
-    </div>
+      <div class="summary-row">
+        <span class="summary-row-label"><?= Trd(20) ?></span>
+        <span id="checkoutSubtotal">$0.00</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-row-label"><?= Trd(46) ?></span>
+        <span id="checkoutTax">$0.00</span>
+      </div>      
     <div class="summary-row">
       <span class="summary-row-label"><?= Trd(21) ?></span>
       <span style="font-size:0.8rem; color:var(--color-ink-faint)"><?= Trd(22) ?></span>
     </div>
-    
+
+
     <div class="summary-row total">
       <span class="summary-row-label"><?= Trd(23) ?></span>
       <span><span id="checkoutTotal">$0.00</span> <span style="font-size:0.75rem; font-weight:400; color:var(--color-ink-soft);">USD</span></span>
@@ -469,11 +478,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 2. Ejecutar la renderización dinámica
-  renderCheckoutSummary();
+ 
 
-  function renderCheckoutSummary() {
+  window.renderCheckoutSummary = function() {
     const itemsContainer = document.getElementById('checkoutItemsList');
     const subtotalLabel = document.getElementById('checkoutSubtotal');
+    const taxLabel = document.getElementById('checkoutTax');
     const totalLabel = document.getElementById('checkoutTotal');
     const mobilePriceLabel = document.getElementById('mobileSummaryPrice');
 
@@ -508,17 +518,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Formatear globales finales
+   
+    const StotalString = totalCalculado.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    if (subtotalLabel) subtotalLabel.textContent = StotalString;
+
+    totalImpuesto = totalCalculado * $('#select_tax').val(); 
+    const totaltaxString = totalImpuesto.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    if (taxLabel) taxLabel.textContent = totaltaxString;
+
+    totalCalculado = totalCalculado + totalImpuesto;
     const totalString = totalCalculado.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     
     $('#monto_final').val(totalCalculado);
 
-    if (subtotalLabel) subtotalLabel.textContent = totalString;
+   
+    
     if (totalLabel) totalLabel.textContent = totalString;
     if (mobilePriceLabel) mobilePriceLabel.textContent = totalString; // Precio del acordeón móvil
 
     // Actualizar sincronización del badge flotante global del menú por si acaso
     $('.cart-count').text(totalItemsGlobal);
   }
+   window.renderCheckoutSummary();
 });
 
 
@@ -585,11 +606,11 @@ function loadCheckoutAddresses() {
         
         // Identificar cuál dirección se marcará por defecto (la configurada como principal o la primera del array)
         const defaultAddr = res.data.find(a => a.is_default == 1) || res.data[0];
-        selectAddress(defaultAddr.id);
+        selectAddress(defaultAddr.id,defaultAddr.tax);
 
         res.data.forEach(addr => {
           html += `
-            <div class="address-card" id="addr_card_${addr.id}" onclick="selectAddress(${addr.id})" style="cursor: pointer; position: relative; transition: all 0.2s ease;">
+            <div class="address-card" id="addr_card_${addr.id}" onclick="selectAddress(${addr.id,addr.tax})" style="cursor: pointer; position: relative; transition: all 0.2s ease;">
               <div class="select-indicator" style="position: absolute; top: 12px; right: 12px; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--color-line-strong);"></div>
               <h3 style="margin-top: 0; font-size: 0.95rem;">${escapeHTML(addr.alias)}</h3>
               <p style="font-size: 0.85rem; line-height: 1.4; color: var(--color-ink-soft); margin-bottom: 0;">
@@ -618,9 +639,11 @@ function loadCheckoutAddresses() {
 }
 
 
-function selectAddress(id) {
+function selectAddress(id,tax) {
   $('#id_address').val(id);
+  $('#select_tax').val(tax);
   highlightActiveCard(id);
+ window.renderCheckoutSummary();
 }
 
 function highlightActiveCard(id) {
