@@ -166,9 +166,23 @@
       <div class="filter-group">
         <h3><?= Trd(9); ?></h3>
         <ul class="filter-links">
-          <li <?php echo ($Category  == "stock") ? "class='active'" : ""; ?>><a  href="<?= URL_BASE ?>/products/stock"><?= Trd(10); ?></a></li>
-          <li <?php echo ($Category  == "byrequest") ? "class='active'" : ""; ?>><a href="<?= URL_BASE ?>/products/byrequest"><?= Trd(11); ?></a></li>
-          <li <?php echo ($Category  == "newdesign") ? "class='active'" : ""; ?>><a href="<?= URL_BASE ?>/products/newdesign"><?= Trd(12); ?></a></li>
+            <li <?php echo ($Category == 'stock') ? "class='active has-sidebar-submenu open'" : "class='has-sidebar-submenu'"; ?>><a href="<?= URL_BASE ?>/products/stock"><?= Trd(10); ?></a>
+                <ul class="sidebar-submenu">
+                <?php
+                    foreach ($datacat['data'] as $category) {
+                    
+                        $URL = str_replace(" ", "-", $category['Nombre']);
+                        if ($Category == 'stock' && $Sub == $category['Nombre']){
+                            echo '<li class="active-sub"><a href="'.URL_BASE.'/products/stock/'.$URL.'">'.$category['Nombre'].'</a></li>';
+                        }
+                        else
+                            echo '<li ><a href="'.URL_BASE.'/products/stock/'.$URL.'">'.$category['Nombre'].'</a></li>';
+                    }          
+                ?>
+                </ul>
+            </li>
+            <li <?php echo ($Category  == "byrequest") ? "class='active'" : ""; ?>><a href="<?= URL_BASE ?>/products/byrequest"><?= Trd(11); ?></a></li>
+            <li <?php echo ($Category  == "newdesign") ? "class='active'" : ""; ?>><a href="<?= URL_BASE ?>/products/newdesign"><?= Trd(12); ?></a></li>
         </ul>
       </div>
     </aside>
@@ -277,6 +291,7 @@ function cargarProductos(pagina,category,scat,search) {
                 armarpaginado(response);
             } else {
                 // Estado Estético: No se encontraron productos
+                $('.products-legend-bar').remove();
                 contenedor.innerHTML = `
                     <div class="empty-state-container w-100 py-5 text-center">
                         <div class="empty-icon">✕</div>
@@ -305,6 +320,7 @@ function cargarProductos(pagina,category,scat,search) {
 function mostrarProductos(productos) {
     const contenedor = $('#contenedor-productos');
     contenedor.empty(); // Limpiamos el contenedor
+    $('.products-legend-bar').remove();
 
     // Estructura de la leyenda (Iconografía-Colors)
     const HTMLLeyenda = `
@@ -317,7 +333,6 @@ function mostrarProductos(productos) {
     `;
 
     // 1. Insertar la leyenda ANTES de los resultados
-    contenedor.before($('.products-legend-bar').remove()); // Evita duplicados si ya existía
     contenedor.parent().prepend(HTMLLeyenda);
 
     productos.forEach(producto => {
@@ -376,7 +391,6 @@ function mostrarProductos(productos) {
     });
 
     // 2. Insertar la leyenda AL FINAL de los resultados de forma dinámica
-    $('.products-legend-bar-end').remove(); // Limpieza previa
     contenedor.after(`<br>${HTMLLeyenda}`);
 }
 

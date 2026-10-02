@@ -6,8 +6,8 @@
     require_once 'functions.php';
     require_once 'head.php'; 
 ?>
-<title>Contáctanos — <?= COMPANY_NAME ?></title>
-<meta name="description" content="Ponte en contacto con el equipo de <?= COMPANY_NAME ?> para cotizaciones personalizadas de flotillas y envíos especiales.">
+<title><?= Trd(1); ?> <?= COMPANY_NAME ?></title>
+<meta name="description" content="<?= sprintf(Trd(2), COMPANY_NAME); ?>">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -174,71 +174,71 @@
 <?php
     $api_url = URL_API."Traducciones_web_sales";
     $data = json_encode(['program' => "contact"]);
-    //$Traducciones = json_decode(API($jwt,$api_url,$data,'GET'), true);
+    $Traducciones = json_decode(API($jwt,$api_url,$data,'GET'), true);
 ?>
 
 <div class="wrap">
   
   <header class="contact-header">
-    <h1>Hablemos de tu negocio</h1>
-    <p>¿Necesitas una cotización especial de flotilla o resolver dudas de fletes pesados? Déjanos un mensaje o contáctanos directamente.</p>
+    <h1><?= Trd(3); ?></h1>
+    <p><?= Trd(4); ?></p>
   </header>
 
   <div class="contact-layout">
     
 <!-- ... Resto de tu código inicial de contact.php ... -->
 <main class="contact-form-wrapper">
-  <h2>Enviar Mensaje</h2>
+  <h2><?= Trd(5); ?></h2>
   <!-- Actualizamos el id y el onsubmit -->
   <form id="contactForm" class="contact-form" onsubmit="submitContactForm(event)">
     
     <div class="form-row">
       <div class="form-group">
-        <label for="conName">Nombre completo</label>
+        <label for="conName"><?= Trd(6); ?></label>
         <input type="text" id="conName" name="name" required placeholder="Ej. Juan Pérez">
       </div>
       <div class="form-group">
-        <label for="conPhone">Teléfono de contacto</label>
+        <label for="conPhone"><?= Trd(7); ?></label>
         <input type="tel" id="conPhone" name="phone" required placeholder="33 1234 5678" maxlength="10">
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group">
-        <label for="conEmail">Correo electrónico</label>
+        <label for="conEmail"><?= Trd(8); ?></label>
         <input type="email" id="conEmail" name="email" required placeholder="juan@ejemplo.com">
       </div>
       <div class="form-group">
-        <label for="conSubject">Asunto de interés</label>
+        <label for="conSubject"><?= Trd(9); ?></label>
         <select id="conSubject" name="subject" required>
-          <option value="" disabled selected>Selecciona una opción</option>
-          <option value="cotizacion">Cotización de Mayoreo / Flotilla</option>
-          <option value="envio">Duda sobre Fletes y Fleteras</option>
-          <option value="garantia">Garantías y Refacciones</option>
-          <option value="otro">Otro asunto comercial</option>
+          <option value="" disabled selected><?= Trd(10); ?></option>
+          <option value="cotizacion"><?= Trd(11); ?></option>
+          <option value="envio"><?= Trd(12); ?></option>
+          <option value="garantia"><?= Trd(13); ?></option>
+          <option value="otro"><?= Trd(14); ?></option>
         </select>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="conMessage">¿En qué podemos ayudarte?</label>
-      <textarea id="conMessage" name="message" required placeholder="Escribe aquí los modelos de brincolines que te interesan o tus dudas sobre la entrega..."></textarea>
+      <label for="conMessage"><?= Trd(15); ?></label>
+      <textarea id="conMessage" name="message" required placeholder="<?= Trd(16); ?>"></textarea>
     </div>
 
     <!-- SECCIÓN NUEVA: CAPTCHA VISUAL -->
     <div class="form-group" style="margin-bottom: 10px;">
-      <label for="conCaptcha">Verificación de seguridad</label>
+      <label for="conCaptcha"><?= Trd(17); ?></label>
       <div style="display: flex; gap: 12px; align-items: center;">
         <!-- Contenedor donde se insertará dinámicamente la imagen -->
-        <div id="captchaContainer" style="cursor: pointer;" title="Clic para refrescar"></div>
+        <div id="captchaContainer" style="cursor: pointer;" title="<?= Trd(18); ?>"></div>
         <!-- Campo oculto que guardará el Token Cifrado de verificación -->
         <input type="hidden" id="conCaptchaToken" name="captcha_token">
-        <input type="text" id="conCaptcha" name="captcha" required placeholder="Escribe el código" maxlength="5" style="text-transform: uppercase; width: 150px;">
+        <input type="text" id="conCaptcha" name="captcha" required placeholder="<?= Trd(19); ?>" maxlength="5" style="text-transform: uppercase; width: 150px;">
       </div>
     </div>
 
     <!-- Añadimos id al botón de enviar -->
-    <button type="submit" id="btnContactSubmit" class="btn-submit">Enviar mensaje por correo</button>
+    <button type="submit" id="btnContactSubmit" class="btn-submit"><?= Trd(20); ?></button>
   </form>
 </main>
 
@@ -246,28 +246,31 @@
     <aside class="contact-info-sidebar">
       
       <a href="https://wa.me/523312345678?text=Hola,%20busco%20cotizar%20brincolines%20al%20mayoreo" class="btn-whatsapp-direct" target="_blank" rel="noopener">
-        <span>Atención Inmediata por WhatsApp</span>
+        <span><?= Trd(21); ?></span>
       </a>
 
       <div class="info-block">
-        <h3>Bodega y Oficinas</h3>
+        <h3><?= Trd(22); ?></h3>
         <p>
           <strong><?= COMPANY_NAME ?></strong><br>
-          Av. Industria 1242, Bodega 4B<br>
-          Col. Altagracia, CP 45100<br>
-          Zapopan, Jalisco, México.
+        <?php
+        echo $account['account'][0]['Direccion']." ".$account['account'][0]['Direccion2']."<br>";
+        echo $account['account'][0]['Ciudad'].' '.$account['account'][0]['CP']."<br>";
+        echo $account['account'][0]['Estado']."<br><br>";
+        ?>
+        <span style="color: var(--color-ink-soft); font-size: 0.82rem;"><?= Trd(26); ?> <?= $account['account'][0]['ZonaHoraria'] ?></span>
         </p>
       </div>
-
+<!-- Información de contacto adicional 
       <div class="info-block">
-        <h3>Horario de Atención</h3>
+        <h3><?= Trd(23); ?></h3>
         <p>
-          Lunes a Viernes: 9:00 AM – 6:30 PM<br>
-          Sábados: 9:00 AM – 2:00 PM<br>
-          <span style="color: var(--color-ink-soft); font-size: 0.82rem;">*Zona Horaria de la Ciudad de México (CST).</span>
+          <?= Trd(24); ?><br>
+          <?= Trd(25); ?><br>
+          
         </p>
       </div>
-
+-->
     </aside>
 
   </div>
@@ -286,6 +289,20 @@
 <script src="js/index.js"></script>
 
 <script>
+// Traducciones para los diálogos de SweetAlert y JS
+const jsTrd = {
+  sending: "<?= Trd(27); ?>",
+  sentTitle: "<?= Trd(28); ?>",
+  acceptBtn: "<?= Trd(29); ?>",
+  valTitle: "<?= Trd(30); ?>",
+  retryBtn: "<?= Trd(31); ?>",
+  errorTitle: "<?= Trd(32); ?>",
+  understoodBtn: "<?= Trd(33); ?>",
+  netErrorTitle: "<?= Trd(34); ?>",
+  netErrorMsg: "<?= Trd(35); ?>",
+  closeBtn: "<?= Trd(36); ?>"
+};
+
 // Función para refrescar la imagen del captcha añadiendo un timestamp único contra el caché
 function loadCaptcha() {
   const xhr = new XMLHttpRequest();
@@ -320,7 +337,7 @@ function submitContactForm(event) {
 
   // Deshabilitar botón durante el proceso
   btnSubmit.disabled = true;
-  btnSubmit.textContent = "Enviando...";
+  btnSubmit.textContent = jsTrd.sending;
 
   const formArray = $('#contactForm').serializeArray();
   const formDataObject = {};
@@ -343,10 +360,10 @@ function submitContactForm(event) {
       if (data.status === 'success') {
         // Alerta de éxito al enviar el formulario
         Swal.fire({
-          title: '¡Enviado!',
+          title: jsTrd.sentTitle,
           text: data.message,
           icon: 'success',
-          confirmButtonText: 'Aceptar',
+          confirmButtonText: jsTrd.acceptBtn,
           customClass: { confirmButton: 'swal2-confirm' }
         });
 
@@ -356,10 +373,10 @@ function submitContactForm(event) {
       } else if (data.status === 'captcha_error') {
         // Alerta de advertencia si el captcha falla o expira
         Swal.fire({
-          title: 'Validación',
+          title: jsTrd.valTitle,
           text: data.message,
           icon: 'warning',
-          confirmButtonText: 'Reintentar',
+          confirmButtonText: jsTrd.retryBtn,
           customClass: { confirmButton: 'swal2-confirm' }
         });
 
@@ -369,10 +386,10 @@ function submitContactForm(event) {
       } else {
         // Alerta de error controlado devuelto por tu API
         Swal.fire({
-          title: 'Hubo un problema',
+          title: jsTrd.errorTitle,
           text: data.message,
           icon: 'error',
-          confirmButtonText: 'Entendido',
+          confirmButtonText: jsTrd.understoodBtn,
           customClass: { confirmButton: 'swal2-confirm' }
         });
       }
@@ -381,10 +398,10 @@ function submitContactForm(event) {
       console.error("Error en la conexión externa: ", error);
       // Alerta de error crítico/fallo de red
       Swal.fire({
-        title: 'Error de Red',
-        text: 'No se pudo establecer comunicación con el servidor externo. Inténtalo más tarde.',
+        title: jsTrd.netErrorTitle,
+        text: jsTrd.netErrorMsg,
         icon: 'error',
-        confirmButtonText: 'Cerrar',
+        confirmButtonText: jsTrd.closeBtn,
         customClass: { confirmButton: 'swal2-confirm' }
       });
     },

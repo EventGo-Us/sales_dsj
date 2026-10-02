@@ -1,4 +1,14 @@
 <style>
+.menu-toggle {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .menu-toggle {
+    display: inline-flex;
+  }
+}
+
 /* ==========================================================================
    1. DROPDOWN GENERAL (Para Productos, Puntos de Entrega, Recursos)
    ========================================================================== */
@@ -114,9 +124,41 @@
 
 </style>
 <?php
+
+function formatPhoneNumber($phoneNumber) {
+    $phoneNumber = preg_replace('/[^0-9]/','',$phoneNumber);
+
+    if(strlen($phoneNumber) > 10) {
+        $countryCode = substr($phoneNumber, 0, strlen($phoneNumber)-10);
+        $areaCode = substr($phoneNumber, -10, 3);
+        $nextThree = substr($phoneNumber, -7, 3);
+        $lastFour = substr($phoneNumber, -4, 4);
+
+        $phoneNumber = '+'.$countryCode.' ('.$areaCode.') '.$nextThree.'-'.$lastFour;
+    }
+    else if(strlen($phoneNumber) == 10) {
+        $areaCode = substr($phoneNumber, 0, 3);
+        $nextThree = substr($phoneNumber, 3, 3);
+        $lastFour = substr($phoneNumber, 6, 4);
+
+        $phoneNumber = '('.$areaCode.') '.$nextThree.'-'.$lastFour;
+    }
+    else if(strlen($phoneNumber) == 7) {
+        $nextThree = substr($phoneNumber, 0, 3);
+        $lastFour = substr($phoneNumber, 3, 4);
+
+        $phoneNumber = $nextThree.'-'.$lastFour;
+    }
+
+    return $phoneNumber;
+}
     $api_url = URL_API."Traducciones_web_sales";
     $data = json_encode(['program' => "nav"]);
     $Traducciones = json_decode(API($jwt,$api_url,$data,'GET'), true);
+
+    $api_url = URL_API."account";
+    $data = "";
+    $account = json_decode(API($jwt,$api_url,$data,'GET'), true);   
 ?>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -139,7 +181,7 @@
 
 <div class="topbar">
   <div class="wrap">
-    <a href="tel:+523312345678">(33) 1234-5678 · Línea mayoreo</a>
+    <a href="tel:+<?php  echo $account['account'][0]['TelefonoOficina']; ?>"><?php  echo formatPhoneNumber($account['account'][0]['TelefonoOficina']); ?></a>
     <div class="topbar-right">
       <span><?= Trd(1); ?></span>
       <span><?= Trd(2); ?></span>
@@ -392,15 +434,7 @@
 </div>
           </li>
           <li><a href="<?= URL_BASE ?>/products/stock"><?= Trd(22); ?></a></li>
-          <li class="has-dropdown">
-            <button class="nav-link" data-dropdown><?= Trd(23); ?> <svg class="icon"><use href="#icon-chevron"/></svg></button>
-            <div class="dropdown">
-              <a href="#">Guadalajara, JAL</a>
-              <a href="#">CDMX</a>
-              <a href="#">Monterrey, NL</a>
-              <a href="#">Querétaro, QRO</a>
-            </div>
-          </li>
+
           <li class="has-dropdown">
             <button class="nav-link" data-dropdown><?= Trd(24); ?> <svg class="icon"><use href="#icon-chevron"/></svg></button>
             <div class="dropdown">
