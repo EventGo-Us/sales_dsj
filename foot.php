@@ -12,9 +12,15 @@
         <p>
 
         <?php
+        /*
         echo $account['account'][0]['Direccion']." ".$account['account'][0]['Direccion2']."<br>";
         echo $account['account'][0]['Ciudad'].' '. $account['account'][0]['CP']."<br>";
         echo $account['account'][0]['Estado']."<br><br>";
+        */
+
+        echo "9242 Hyssop Dr. <br>";
+        echo "Rancho Cucamonga CA <br>";
+        echo "91730<br><br>s";
         ?>
          <strong><svg class="icon" style="width:15px;height:15px"><use href="#icon-phone" /></svg>:</strong> <?php echo formatPhoneNumber($account['account'][0]['TelefonoOficina']); ?><br>
          <strong><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24" fill="currentColor">
@@ -30,6 +36,7 @@
           <li><a href="<?= URL_BASE ?>/products/all"><?= Trd(4); ?></a></li>
           <li><a href="<?= URL_BASE ?>/products/stock"><?= Trd(5); ?></a></li>
           <li><a href="<?= URL_BASE ?>/contact"><?= Trd(7); ?></a></li>
+          <li><a href="<?= URL_BASE ?>/contact"><?= Trd(26); ?></a></li>
         </ul>
       </div>
 
@@ -40,17 +47,17 @@
           <li><a href="#"><?= Trd(10); ?></a></li>
           <li><a href="<?= URL_BASE ?>/aboutus"><?= Trd(11); ?></a></li>
           <li><a href="<?= URL_BASE ?>/comments"><?= Trd(12); ?></a></li>
-          <li><a href="<?= URL_BASE ?>/guarantees"><?= Trd(13); ?></a></li>
+          <li><a href="<?= URL_BASE ?>/warranties"><?= Trd(13); ?></a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <h4><?= Trd(14); ?></h4>
         <div class="social-row">
-          <a href="#" aria-label="Facebook"><svg class="icon" style="width:15px;height:15px"><use href="#icon-facebook"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg class="icon" style="width:15px;height:15px"><use href="#icon-instagram"/></svg></a>
-          <a href="#" aria-label="TikTok"><svg class="icon" style="width:15px;height:15px"><use href="#icon-tiktok"/></svg></a>
-          <a href="#" aria-label="YouTube"><svg class="icon" style="width:15px;height:15px"><use href="#icon-youtube"/></svg></a>
+          <a href="<?= $account['account'][0]['URLFace'] ?>" aria-label="Facebook"><svg class="icon" style="width:15px;height:15px"><use href="#icon-facebook"/></svg></a>
+          <a href="<?= $account['account'][0]['URLInsta'] ?>" aria-label="Instagram"><svg class="icon" style="width:15px;height:15px"><use href="#icon-instagram"/></svg></a>
+          <a href="<?= $account['account'][0]['URLLink'] ?>" aria-label="TikTok"><svg class="icon" style="width:15px;height:15px"><use href="#icon-tiktok"/></svg></a>
+          <a href="<?= $account['account'][0]['URLYou'] ?>" aria-label="YouTube"><svg class="icon" style="width:15px;height:15px"><use href="#icon-youtube"/></svg></a>
         </div>
         <p style="margin-top:18px; font-size:.8rem;"><?= Trd(15); ?></p>
       </div>

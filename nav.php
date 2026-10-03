@@ -3,9 +3,29 @@
   display: none;
 }
 
+.distributor-label {
+  flex: 0 1 190px;
+  color: var(--color-ink-soft);
+  font-size: .76rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+}
+
 @media (max-width: 760px) {
   .menu-toggle {
     display: inline-flex;
+  }
+
+  .header-top-row {
+    flex-wrap: wrap;
+  }
+
+  .distributor-label {
+    order: 4;
+    flex: 0 0 100%;
+    padding: 0 8px 2px;
+    font-size: .72rem;
   }
 }
 
@@ -221,7 +241,7 @@ function formatPhoneNumber($phoneNumber) {
                   $datacat = json_decode(API($jwt,$api_url,$data,'POST'), true);
                   if ($datacat['status'] === 'success') {
                       foreach ($datacat['data'] as $category) {
-                          $category['Imagen'] = URL_IMAGES.'/categories/thumbnails/'.$category['Imagen'];
+                          $category['Imagen'] = URL_IMAGES.'/categories/originals/'.$category['Imagen'];
                           $URL = str_replace(" ","-",$category['Nombre']);
                           $sel = '';
                           if ($cat == $URL)
@@ -252,6 +272,8 @@ function formatPhoneNumber($phoneNumber) {
           </div>
         </form>
       </div>
+
+      <div class="distributor-label">Authorized Bouncing Angels Distributors</div>
 
 <div class="header-actions">
   <button class="icon-btn mobile-search-toggle" id="mobileSearchToggle" aria-label="Buscar"><svg class="icon"><use href="#icon-search"/></svg></button>
@@ -395,7 +417,7 @@ function formatPhoneNumber($phoneNumber) {
         <?php
         if ($datacat['status'] === 'success') {
             foreach ($datacat['data'] as $category) {
-                $category['Imagen'] = URL_IMAGES.'/categories/thumbnails/'.$category['Imagen'];
+                $category['Imagen'] = URL_IMAGES.'/categories/originals/'.$category['Imagen'];
                 $URL = str_replace(" ", "-", $category['Nombre']);
                 
                 // Buscar subcategorías

@@ -46,7 +46,7 @@
   <hr class="divider-full">
   <!-- COLECCIONES -->
   <?php
-    require_once('all_cat.php');
+    //require_once('all_cat.php');
   ?>
   <!-- NEWSLETTER -->
   <?php

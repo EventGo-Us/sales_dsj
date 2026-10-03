@@ -68,7 +68,7 @@ function simulateNewsletterAPI(event) {
       } else if (data.status === 'success') {
         // Registro exitoso en la base de datos
         Swal.fire({
-          title: '<?= Trd(10); ?>',
+          title: '<?=  $account['account'][0]['Correo'] ?> <br><br> <?= Trd(10); ?>',
           text: '<?= Trd(11); ?>',
           icon: 'success',
           confirmButtonText: '<?= Trd(12); ?>',

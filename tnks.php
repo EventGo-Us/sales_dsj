@@ -248,7 +248,7 @@ function generarContratoHtml($htmlTemplate, $camposGenerales, $productos) {
 
         foreach ($productos as $item) {
             
-            $item['image'] = str_replace('originals', 'thumbnails', $item['image']);
+            $item['image'] = str_replace('originals', 'originals', $item['image']);
             $item['image'] = str_replace('.avif', '.jpg', $item['image']);
             $reemplazosProducto = [
                 '*productname_url_photo*' => $item['image'] ?? '',

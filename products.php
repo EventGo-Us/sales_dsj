@@ -92,7 +92,7 @@
 
     if ($datacat['status'] === 'success') {
         foreach ($datacat['data'] as $category) {
-            $category['Imagen'] = URL_IMAGES.'/categories/thumbnails/'.$category['Imagen'];
+            $category['Imagen'] = URL_IMAGES.'/categories/originals/'.$category['Imagen'];
             $URL = str_replace(" ", "-", $category['Nombre']);
             
             // 1. Validar si esta categoría tiene subcategorías
@@ -368,7 +368,7 @@ function mostrarProductos(productos) {
         let card = `
             <article class="product-card">
               <a href="${url_product}" class="product-media">
-                <img src="${url_images}/products_images/thumbnails/${producto.Image}" alt="${producto.Name}">
+                <img src="${url_images}/products_images/originals/${producto.Image}" alt="${producto.Name}">
                 
               </a>
               

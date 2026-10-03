@@ -253,40 +253,40 @@
 
       </div>
 
-      <h2 class="warranty-section-title">Tiempos de Garantía por Categoría</h2>
+<h2 class="warranty-section-title"><?= Trd(44);?></h2>
       <table class="warranty-table">
         <thead>
           <tr>
-            <th>Línea de Producto / Componente</th>
-            <th>Uso Recomendado</th>
-            <th>Periodo de Garantía</th>
+            <th><?= Trd(45);?></th>
+            <th><?= Trd(46);?></th>
+            <th><?= Trd(47);?></th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Toboganes de Agua e Inflables Interactivos</strong></td>
-            <td>Comercial de Alto Impacto</td>
-            <td><strong>2 Años</strong> ante costuras y vinil</td>
+            <td><?= Trd(48);?></td>
+            <td><?= Trd(49);?></td>
+            <td><?= Trd(50);?></td>
           </tr>
           <tr>
-            <td><strong>Brincolines Clásicos y Combos Básicos</strong></td>
-            <td>Comercial Estándar</td>
-            <td><strong>1 Año</strong> ante costuras y vinil</td>
+            <td><?= Trd(51);?></td>
+            <td><?= Trd(52);?></td>
+            <td><?= Trd(53);?></td>
           </tr>
           <tr>
-            <td><strong>Motores de Inflado (Sopladores de 1.0 HP / 1.5 HP)</strong></td>
-            <td>Continuo / Rudo</td>
-            <td><strong>1 Año</strong> en sistema eléctrico</td>
+            <td><?= Trd(54);?></td>
+            <td><?= Trd(55);?></td>
+            <td><?= Trd(56);?></td>
           </tr>
           <tr>
-            <td><strong>Carpas Comerciales y Lonas de Sombra</strong></td>
-            <td>Exterior Fijo</td>
-            <td><strong>6 Meses</strong> estructurales</td>
+            <td><?= Trd(57);?></td>
+            <td><?= Trd(58);?></td>
+            <td><?= Trd(59);?></td>
           </tr>
           <tr>
-            <td><strong>Bolsas de Almacenamiento y Kits de Parches</strong></td>
-            <td>Accesorios</td>
-            <td><strong>30 Días</strong> por defectos de fábrica</td>
+            <td><?= Trd(60);?></td>
+            <td><?= Trd(61);?></td>
+            <td><?= Trd(62);?></td>
           </tr>
         </tbody>
       </table>

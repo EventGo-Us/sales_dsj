@@ -16,7 +16,7 @@
 
         <div class="stat-row">
           <div class="stat"><span class="num">800+</span><span class="label">Rentadoras activas</span></div>
-          <div class="stat"><span class="num">2 años</span><span class="label">Garantía de costuras</span></div>
+          <div class="stat"><span class="num">3 años</span><span class="label">Garantía de costuras</span></div>
           <div class="stat"><span class="num">5–10</span><span class="label">Días de entrega</span></div>
         </div>
       </div>
@@ -31,7 +31,7 @@
 
                 if ($data['status'] === 'success') {
                     foreach ($data['images'] as $img) {
-                      $URLImage2= URL_IMAGES.'/products_images/thumbnails/'.$img['Image'];
+                      $URLImage2= URL_IMAGES.'/products_images/originals/'.$img['Image'];
                     }
                     foreach ($data['data'] as $product) {
                       $URLImage = URL_IMAGES.'/products_images/originals/'.$product['Image'];

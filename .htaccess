@@ -12,7 +12,7 @@ RewriteRule ^contact/?$ contact.php [L,QSA]
 
 RewriteRule ^privacy/?$ privacy.php [L,QSA]
 RewriteRule ^conditions/?$ conditions.php [L,QSA]
-RewriteRule ^guarantees/?$ guarantees.php [L,QSA]
+RewriteRule ^warranties/?$ warranties.php [L,QSA]
 RewriteRule ^cart/?$ carrito.php [L,QSA]
 RewriteRule ^checkout/?$ checkout.php [L,QSA]
 RewriteRule ^tnks/?$ tnks.php [L,QSA]

@@ -21,7 +21,7 @@
                 $data = json_decode(API($jwt,$api_url,$data,'POST'), true);
                 if ($data['status'] === 'success') {
                     foreach ($data['data'] as $category) {
-                        $category['Imagen'] = URL_IMAGES.'/categories/thumbnails/'.$category['Imagen'];
+                        $category['Imagen'] = URL_IMAGES.'/categories/originals/'.$category['Imagen'];
                         $URL = str_replace(" ","-",$category['Nombre']);
                         echo '
                           <a class="category-card" href="products/'.$URL.'">

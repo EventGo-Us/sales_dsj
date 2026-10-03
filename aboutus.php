@@ -247,26 +247,37 @@
   <div class="map-layout">
     
     <div class="map-info-box">
-      <h3>Ubicación Física</h3>
+      <h3><?= Trd(14); ?></h3>
       <p style="font-size: 0.92rem; font-weight: 500;">
-        Av. Industria 1242, Bodega 4B<br>
-        Col. Altagracia, CP 45100<br>
-        Zapopan, Jalisco, México.
+<?php
+        echo "9242 Hyssop Dr. <br>";
+        echo "Rancho Cucamonga CA <br>";
+        echo "91730";
+?>
       </p>
+<!--
       <ul>
         <li>A 10 minutos de Periférico Norte.</li>
         <li>Estacionamiento techado para carga y descarga de mercancía pesada.</li>
         <li>Atención previa cita para cotizaciones de flotillas.</li>
       </ul>
+-->
     </div>
 
     <div class="map-container">
-      <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3731.2582846175023!2d-103.39343382410887!3d20.730164698305047!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428af090b39563b%3A0x6b7724a30e8446b1!2sAltagracia%2C%20Zapopan%2C%20Jal.!5e0!3m2!1ses-419!2smx!4v1718990000000!5m2!1ses-419!2smx" 
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
+<?php
+$lat = $account['account'][0]['Lat']; // tu latitud desde PHP
+$lng = $account['account'][0]['Lng']; // tu longitud desde PHP
+?>
+<iframe 
+    src="https://maps.google.com/maps?q=<?= $lat ?>,<?= $lng ?>&z=16&output=embed"
+    width="100%" 
+    height="400" 
+    style="border:0;" 
+    allowfullscreen="" 
+    loading="lazy" 
+    referrerpolicy="no-referrer-when-downgrade">
+</iframe>
     </div>
 
   </div>

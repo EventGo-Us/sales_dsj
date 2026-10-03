@@ -94,7 +94,7 @@
       <?php 
           foreach ($data['Images'] as $Image) {
               $OURLImage = "'".URL_IMAGES.'/products_images/originals/'.$Image['Image']."'";
-              $URLImage = URL_IMAGES.'/products_images/thumbnails/'.$Image['Image'];
+              $URLImage = URL_IMAGES.'/products_images/originals/'.$Image['Image'];
               echo '
                 <div class="thumb-item active" onclick="changeImage(this, '.$OURLImage.')">
                   <img src="'.$URLImage.'" alt="'.$producto['Name'].'">
