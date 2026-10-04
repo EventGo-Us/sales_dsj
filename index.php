@@ -22,9 +22,31 @@
     require_once ('nav.php');
   ?>
 <main>
+
+
+<section id="banner" class="banner-band" aria-label="Promociones destacadas">
+  <div class="banner-carousel" role="group" aria-roledescription="carrusel">
+    <div class="banner-carousel-slides">
+      <div class="banner-slide is-active" role="group" aria-roledescription="diapositiva" aria-label="1 de 3">
+        <img src="<?= URL_BASE ?>/images/banner/slide_1.webp" alt="Inflables fabricados bajo pedido en Estados Unidos" fetchpriority="high">
+      </div>
+      <div class="banner-slide" role="group" aria-roledescription="diapositiva" aria-label="2 de 3" aria-hidden="true">
+        <img src="<?= URL_BASE ?>/images/banner/slide_2.webp" alt="Sillas para eventos">
+      </div>
+      <div class="banner-slide" role="group" aria-roledescription="diapositiva" aria-label="3 de 3" aria-hidden="true">
+        <img src="<?= URL_BASE ?>/images/banner/slide_3.webp" alt="Carpas para eventos en oferta">
+      </div>
+    </div>
+    <div class="banner-indicators" role="group" aria-label="Indicadores de posición">
+      <button class="banner-indicator is-active" type="button" aria-label="Mostrar imagen 1" aria-pressed="true"></button>
+      <button class="banner-indicator" type="button" aria-label="Mostrar imagen 2" aria-pressed="false"></button>
+      <button class="banner-indicator" type="button" aria-label="Mostrar imagen 3" aria-pressed="false"></button>
+    </div>
+  </div>
+</section>
   <!-- HERO -->
   <?php
-    require_once('hero.php');
+    //require_once('hero.php');
   ?>
   <hr class="divider-full">
   <!-- CATEGORÍAS -->

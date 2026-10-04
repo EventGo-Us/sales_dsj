@@ -12,9 +12,22 @@
   text-align: center;
 }
 
+.logo img {
+  display: block;
+  width: auto;
+  height: 56px;
+  max-width: 84px;
+  object-fit: contain;
+}
+
 @media (max-width: 760px) {
   .menu-toggle {
     display: inline-flex;
+  }
+
+  .logo img {
+    height: 46px;
+    max-width: 69px;
   }
 
   .header-top-row {
@@ -217,7 +230,9 @@ function formatPhoneNumber($phoneNumber) {
         <svg class="icon"><use href="#icon-menu"/></svg>
       </button>
 
-      <a href="<?= URL_BASE ?>/" class="logo"><?= COMPANY_NAME ?></a>
+      <a href="<?= URL_BASE ?>/" class="logo" aria-label="<?= COMPANY_NAME ?>">
+        <img src="<?= URL_BASE ?>/images/logo_dsj_pro.png" alt="<?= COMPANY_NAME ?>">
+      </a>
 
       <div class="search-bar-container" id="searchBarContainer">
         <form action="<?= URL_BASE ?>/products/search" method="GET" class="search-form">
@@ -460,8 +475,8 @@ function formatPhoneNumber($phoneNumber) {
           <li class="has-dropdown">
             <button class="nav-link" data-dropdown><?= Trd(24); ?> <svg class="icon"><use href="#icon-chevron"/></svg></button>
             <div class="dropdown">
-              <a href="#">Blog</a>
-              <a href="#"><?= Trd(25); ?></a>
+              <a href="<?php echo URL_BASE?>/blog">Blog</a>
+              <a href="<?php echo URL_BASE?>/manuals"><?= Trd(25); ?></a>
               <a href="<?php echo URL_BASE?>/aboutus"><?= Trd(26); ?></a>
               <a href="<?php echo URL_BASE?>/comments"><?= Trd(27); ?></a>
             </div>

@@ -10,6 +10,12 @@ RewriteRule ^comments/?$ comments.php [L,QSA]
 RewriteRule ^aboutus/?$ aboutus.php [L,QSA]
 RewriteRule ^contact/?$ contact.php [L,QSA]
 
+RewriteRule ^blog/?$ blog.php [L,QSA]
+RewriteRule ^blogs/([^/]+)/?$ blogs.php?slug=$1 [L,QSA]
+RewriteRule ^blogs/?$ blog.php [L,QSA]
+RewriteRule ^manuals/?$ manuals.php [L,QSA]
+
+RewriteRule ^terms/?$ terms.php [L,QSA]
 RewriteRule ^privacy/?$ privacy.php [L,QSA]
 RewriteRule ^conditions/?$ conditions.php [L,QSA]
 RewriteRule ^warranties/?$ warranties.php [L,QSA]

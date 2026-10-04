@@ -181,4 +181,54 @@ document.addEventListener('click', () => {
         
     });
 
+// CARRUSEL DEL BANNER
+const bannerCarousel = document.querySelector('.banner-carousel');
 
+if (bannerCarousel) {
+  const slides = Array.from(bannerCarousel.querySelectorAll('.banner-slide'));
+  const indicators = Array.from(bannerCarousel.querySelectorAll('.banner-indicator'));
+  let activeSlide = 0;
+  let carouselTimer;
+
+  const showSlide = (index) => {
+    activeSlide = index;
+    slides.forEach((slide, slideIndex) => {
+      const isActive = slideIndex === activeSlide;
+      slide.classList.toggle('is-active', isActive);
+      slide.setAttribute('aria-hidden', String(!isActive));
+      indicators[slideIndex].classList.toggle('is-active', isActive);
+      indicators[slideIndex].setAttribute('aria-pressed', String(isActive));
+    });
+  };
+
+  const stopCarousel = () => {
+    window.clearInterval(carouselTimer);
+  };
+
+  const startCarousel = () => {
+    stopCarousel();
+    if (!document.hidden && !bannerCarousel.matches(':hover') && !bannerCarousel.contains(document.activeElement)) {
+      carouselTimer = window.setInterval(() => {
+        showSlide((activeSlide + 1) % slides.length);
+      }, 5000);
+    }
+  };
+
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => {
+      showSlide(index);
+      startCarousel();
+    });
+  });
+
+  bannerCarousel.addEventListener('mouseenter', stopCarousel);
+  bannerCarousel.addEventListener('mouseleave', startCarousel);
+  bannerCarousel.addEventListener('focusin', stopCarousel);
+  bannerCarousel.addEventListener('focusout', (event) => {
+    if (!bannerCarousel.contains(event.relatedTarget)) {
+      startCarousel();
+    }
+  });
+  document.addEventListener('visibilitychange', startCarousel);
+  startCarousel();
+}

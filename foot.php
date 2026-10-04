@@ -20,7 +20,7 @@
 
         echo "9242 Hyssop Dr. <br>";
         echo "Rancho Cucamonga CA <br>";
-        echo "91730<br><br>s";
+        echo "91730<br><br>";
         ?>
          <strong><svg class="icon" style="width:15px;height:15px"><use href="#icon-phone" /></svg>:</strong> <?php echo formatPhoneNumber($account['account'][0]['TelefonoOficina']); ?><br>
          <strong><svg class="icon" style="width:15px;height:15px" viewBox="0 0 24 24" fill="currentColor">
@@ -36,7 +36,7 @@
           <li><a href="<?= URL_BASE ?>/products/all"><?= Trd(4); ?></a></li>
           <li><a href="<?= URL_BASE ?>/products/stock"><?= Trd(5); ?></a></li>
           <li><a href="<?= URL_BASE ?>/contact"><?= Trd(7); ?></a></li>
-          <li><a href="<?= URL_BASE ?>/contact"><?= Trd(26); ?></a></li>
+          <li><a href="<?= URL_BASE ?>/terms"><?= Trd(26); ?></a></li>
         </ul>
       </div>
 

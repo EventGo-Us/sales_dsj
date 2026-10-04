@@ -187,6 +187,71 @@ section{ padding:64px 0; }
 .search-submit-btn:hover { background: var(--color-line); color: var(--color-brand); }
 .header-actions .mobile-search-toggle { display: none; }
 
+
+.banner-band{ width:100%; padding:0; background:#fff; }
+.banner-carousel{
+  position:relative;
+  width:100%;
+  aspect-ratio:4 / 1;
+  overflow:hidden;
+  background:var(--color-bg-soft);
+}
+.banner-carousel-slides,
+.banner-slide{
+  position:absolute;
+  inset:0;
+}
+.banner-slide{
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .45s ease, visibility .45s ease;
+}
+.banner-slide.is-active{
+  opacity:1;
+  visibility:visible;
+}
+.banner-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.banner-indicators{
+  position:absolute;
+  z-index:1;
+  left:50%;
+  bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(22,24,29,.48);
+  transform:translateX(-50%);
+}
+.banner-indicator{
+  width:10px;
+  height:10px;
+  padding:0;
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:999px;
+  background:rgba(255,255,255,.45);
+  transition:width .2s ease, background-color .2s ease;
+}
+.banner-indicator.is-active{
+  width:24px;
+  background:#fff;
+}
+.banner-indicator:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:3px;
+}
+
+@media (max-width: 580px){
+  .banner-indicators{ bottom:8px; gap:7px; padding:6px 9px; }
+  .banner-indicator{ width:8px; height:8px; }
+  .banner-indicator.is-active{ width:20px; }
+}
+
 /* ============================================================
    5. HERO
    ============================================================ */
@@ -621,4 +686,3 @@ section{ padding:64px 0; }
   .address-modal.open { transform: translateY(0); left: 0; }
   .modal-body .form-row { grid-template-columns: 1fr; gap: 16px; }
 }
-
