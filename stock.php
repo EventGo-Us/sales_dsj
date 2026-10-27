@@ -29,7 +29,7 @@
                         else{
                           $price = '<div class="price-row"><span class="price-sale">$'.number_format($product['SalePrice'], 2, ".", ",").'</span></div>';
                         }
-                        $URLImage = URL_IMAGES.'/products_images/originals/'.$product['Image'];
+                        $URLImage = URL_IMAGES.'/products_images_sale/originals/'.$product['Image'];
                         //$URL = 'product/'.str_replace(" ","-",$product['Name']);
                         $URL = 'product/'.str_replace(" ","-",$product['Name']).'?Idp='.$product['Id'];
                         

@@ -368,7 +368,7 @@ function mostrarProductos(productos) {
         let card = `
             <article class="product-card">
               <a href="${url_product}" class="product-media">
-                <img src="${url_images}/products_images/originals/${producto.Image}" alt="${producto.Name}">
+                <img src="${url_images}/products_images_sale/originals/${producto.Image}" alt="${producto.Name}">
                 
               </a>
               

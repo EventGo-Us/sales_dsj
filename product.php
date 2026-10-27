@@ -84,7 +84,7 @@
     <div class="main-image">
       <?php 
           foreach ($data['Image'] as $Image) {
-              $URLImagep = URL_IMAGES.'/products_images/originals/'.$Image['Image'];
+              $URLImagep = URL_IMAGES.'/products_images_sale/originals/'.$Image['Image'];
           }
       ?>    
       <img id="productMainImg" src="<?= $URLImagep ?>" alt="<?= $producto['Name'] ?>">
@@ -93,8 +93,8 @@
     <div class="thumbnail-grid">
       <?php 
           foreach ($data['Images'] as $Image) {
-              $OURLImage = "'".URL_IMAGES.'/products_images/originals/'.$Image['Image']."'";
-              $URLImage = URL_IMAGES.'/products_images/originals/'.$Image['Image'];
+              $OURLImage = "'".URL_IMAGES.'/products_images_sale/originals/'.$Image['Image']."'";
+              $URLImage = URL_IMAGES.'/products_images_sale/originals/'.$Image['Image'];
               echo '
                 <div class="thumb-item active" onclick="changeImage(this, '.$OURLImage.')">
                   <img src="'.$URLImage.'" alt="'.$producto['Name'].'">

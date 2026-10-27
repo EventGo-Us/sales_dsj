@@ -25,7 +25,7 @@ $contenido ="
 </style>
 ".$data->contrato;
 
-// https://pub-546a2d9d368f4b87a457962de1d77955.r2.dev/1001/products_images/thumbnails/file_69eae008ab6b9.avif
+// https://pub-546a2d9d368f4b87a457962de1d77955.r2.dev/1001/products_images_sale/thumbnails/file_69eae008ab6b9.avif
 
 $sale = $data->sale;
 $token = $data->token;
