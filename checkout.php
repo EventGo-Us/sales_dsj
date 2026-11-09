@@ -221,10 +221,19 @@
         <?php
             $PayPlatform = $account['Pay_platform'];
 
+            $api_url = URL_API . ($PayPlatform == 'OPAY' ? 'OPAY' : 'SQUARE');
+            $data = '';
+            $pay_account = json_decode(API($jwt, $api_url, $data, 'GET'), true);
+            $extra_pctj = isset($pay_account['extracharge']) && $pay_account['extracharge'] == 1
+                ? (float) ($pay_account['percentage'] ?? 0) / 100
+                : 0;
+
             $api_url = URL_API."PAYPAL";
             $data = '';
             $paypal_account = json_decode(API($jwt,$api_url,$data,'GET'), true);      
-
+            $paypal_extra_pctj = isset($paypal_account['extracharge']) && $paypal_account['extracharge'] == 1
+                ? (float) ($paypal_account['percentage'] ?? 0) / 100
+                : 0;
 
         ?>        
 
@@ -344,9 +353,13 @@
                 
                 <div style="width: 100%; display: flex; justify-content: center; margin-top: 16px;">
                     <?php if ($PayPlatform == 'OPAY'): ?>
+                      <!--
                         <img src="https://www.openpay.mx/_ipx/_/img/header/openpay-color.svg" alt="Openpay" style="height: 22px; opacity: 0.5; display: block; margin: 0 auto;">
+                      -->
                     <?php else: ?>
+                      <!--
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Square%2C_Inc._logo.svg/1280px-Square%2C_Inc._logo.svg.png" alt="Square" style="height: 20px; opacity: 0.5; display: block; margin: 0 auto;">
+                      -->
                     <?php endif; ?>                     
                 </div>
             </div>
@@ -377,10 +390,18 @@ $Traducciones = $TrdRsp;
       <span style="font-size:0.8rem; color:var(--color-ink-faint)"><?= Trd(22) ?></span>
     </div>
 
-
     <div class="summary-row total">
       <span class="summary-row-label"><?= Trd(23) ?></span>
       <span><span id="checkoutTotal">$0.00</span> <span style="font-size:0.75rem; font-weight:400; color:var(--color-ink-soft);">USD</span></span>
+    </div>
+
+    <div class="summary-row" id="checkoutPaymentFeeRow" style="display:none;">
+      <span class="summary-row-label" id="checkoutPaymentFeeLabel">Cargo por tarjeta</span>
+      <span id="checkoutPaymentFee">$0.00</span>
+    </div>
+    <div class="summary-row total">
+      <span class="summary-row-label">Monto a pagar</span>
+      <span><span id="checkoutAmountDue">$0.00</span> <span style="font-size:0.75rem; font-weight:400; color:var(--color-ink-soft);">USD</span></span>
     </div>
 
     <div class="cart-note-box">
@@ -464,6 +485,48 @@ $Traducciones = $TrdRsp;
    INTEGRACIÓN LOGICALSTORAGE COMPLETA EN CHECKOUT
    ============================================================ */
 
+const checkoutCardExtraPct = <?= json_encode((float) $extra_pctj) ?>;
+const checkoutPayPalExtraPct = <?= json_encode((float) $paypal_extra_pctj) ?>;
+let checkoutBaseAmount = 0;
+
+function getCheckoutPaymentAmounts(baseAmount) {
+  const paymentMethod = $('#method-paypal').length && $('#method-paypal').is(':checked')
+    ? 'paypal'
+    : 'card';
+  const percentage = paymentMethod === 'paypal' ? checkoutPayPalExtraPct : checkoutCardExtraPct;
+  const baseCents = Math.round(baseAmount * 100);
+  const feeCents = percentage > 0
+    ? Math.round(baseCents * percentage + Number.EPSILON)
+    : 0;
+
+  return {
+    paymentMethod,
+    percentage,
+    baseAmount: (baseCents / 100).toFixed(2),
+    feeAmount: (feeCents / 100).toFixed(2),
+    totalAmount: ((baseCents + feeCents) / 100).toFixed(2)
+  };
+}
+
+function updateCheckoutPaymentSummary(baseAmount) {
+  const amounts = getCheckoutPaymentAmounts(baseAmount);
+  const feeCents = Math.round(parseFloat(amounts.feeAmount) * 100);
+  const formatAmount = amount => Number(amount).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  });
+
+  $('#checkoutPaymentFeeRow').toggle(feeCents > 0);
+  $('#checkoutPaymentFeeLabel').text(
+    (amounts.paymentMethod === 'paypal' ? 'Cargo PayPal (' : 'Cargo por tarjeta (') +
+    (amounts.percentage * 100).toFixed(2) + '%)'
+  );
+  $('#checkoutPaymentFee').text(formatAmount(amounts.feeAmount));
+  $('#checkoutAmountDue').text(formatAmount(amounts.totalAmount));
+  $('#monto_final').val(amounts.totalAmount);
+  return amounts;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Obtener datos de la pasarela
   const cart = JSON.parse(localStorage.getItem('brinca_cart')) || [];
@@ -527,18 +590,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (taxLabel) taxLabel.textContent = totaltaxString;
 
     totalCalculado = totalCalculado + totalImpuesto;
+    checkoutBaseAmount = totalCalculado;
     const totalString = totalCalculado.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    
-    $('#monto_final').val(totalCalculado);
+     updateCheckoutPaymentSummary(totalCalculado);
 
    
     
-    if (totalLabel) totalLabel.textContent = totalString;
-    if (mobilePriceLabel) mobilePriceLabel.textContent = totalString; // Precio del acordeón móvil
+     if (totalLabel) totalLabel.textContent = totalString;
+     if (mobilePriceLabel) mobilePriceLabel.textContent = $('#checkoutAmountDue').text(); // Precio del acordeón móvil
 
-    // Actualizar sincronización del badge flotante global del menú por si acaso
-    $('.cart-count').text(totalItemsGlobal);
-  }
+     // Actualizar sincronización del badge flotante global del menú por si acaso
+     $('.cart-count').text(totalItemsGlobal);
+   }
+   $('input[name="payment_method"]').on('change', function() {
+     const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+     const baseAmount = subtotal + subtotal * parseFloat($('#select_tax').val() || 0);
+     updateCheckoutPaymentSummary(baseAmount);
+     $('#mobileSummaryPrice').text($('#checkoutAmountDue').text());
+   });
    window.renderCheckoutSummary();
 });
 
@@ -745,7 +814,7 @@ function escapeHTML(str) {
             // Configuración Openpay
             OpenPay.setId('<?php echo $opay_account['Id'];?>');
             OpenPay.setApiKey('<?php echo $opay_account['PublicKey'];?>');
-            OpenPay.setSandboxMode(true);
+            OpenPay.setSandboxMode(<?php echo $opay_account['sandbox'];?>);
             OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
 
             // --- VALIDACIONES DE INPUTS ---
@@ -789,6 +858,7 @@ function escapeHTML(str) {
                     $('#cartNote_final').val($('#cartNote').val())
 
                     // Enviamos los datos al backend.php mediante AJAX
+                    window.renderCheckoutSummary();
                     var datosFormulario = $('#payment-form').serialize();
 
 
@@ -852,9 +922,14 @@ function escapeHTML(str) {
         $Traducciones = $TrdPgs; 
         $api_url = URL_API."SQUARE";
         $data = '';
-        $square_account = json_decode(API($jwt,$api_url,$data,'GET'), true);            
+        $square_account = json_decode(API($jwt,$api_url,$data,'GET'), true);
+        if($square_account['sandbox']=='1'){
+            echo '<script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>';
+        }
+        else{
+            echo '<script type="text/javascript" src="https://web.squarecdn.com/v1/square.js"></script>';
+        }
 ?>
-    <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
     <script>
             const appId = '<?php echo $square_account['Id'];?>';
             const locId = '<?php echo $square_account['LocalId'];?>';
@@ -891,6 +966,7 @@ function escapeHTML(str) {
 
             try {
                 $('#cartNote_final').val($('#cartNote').val())
+                window.renderCheckoutSummary();
                 var datosFormulario = $('#payment-form').serialize();
                 
 
@@ -1000,18 +1076,37 @@ $(document).on('change', 'input[name="payment_method"]', function() {
         },
 
         createOrder: function(data, actions) {
-            // 1. Obtenemos los montos y los datos editados de la tarjeta prestada/propia en tiempo real
-            var monto = $('#monto_final').val(); 
+            const amounts = updateCheckoutPaymentSummary(checkoutBaseAmount);
+            const currency = '<?= $account['Currency'] ?>';
             var nombreTitular = $('#client-name').val();
             var apellidoTitular = $('#client-lastname').val();
             var emailTitular = $('#client-email').val();
+            const items = [{
+                name: 'Productos e impuestos',
+                sku: 'Checkout',
+                unit_amount: {
+                    currency_code: currency,
+                    value: amounts.baseAmount
+                },
+                quantity: '1'
+            }];
+
+            if (parseFloat(amounts.feeAmount) > 0) {
+                items.push({
+                    name: 'Cargo PayPal (' + (amounts.percentage * 100).toFixed(2) + '%)',
+                    sku: 'PayPalFee',
+                    unit_amount: {
+                        currency_code: currency,
+                        value: amounts.feeAmount
+                    },
+                    quantity: '1'
+                });
+            }
             
-            // 2. Estructuramos la orden enviándole la información del pagador a PayPal
             return actions.order.create({
                 application_context: {
                     shipping_preference: 'NO_SHIPPING'
                 },
-                // Inyectamos el objeto 'payer' nativo de la API de PayPal
                 payer: {
                     name: {
                         given_name: nombreTitular,
@@ -1021,14 +1116,23 @@ $(document).on('change', 'input[name="payment_method"]', function() {
                 },
                 purchase_units: [{
                     amount: {
-                        value: monto
-                    }
+                        currency_code: currency,
+                        value: amounts.totalAmount,
+                        breakdown: {
+                            item_total: {
+                                currency_code: currency,
+                                value: amounts.totalAmount
+                            }
+                        }
+                    },
+                    items: items
                 }]
             });
         },
 
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(orderData) {
+                updateCheckoutPaymentSummary(checkoutBaseAmount);
                 // Serializamos los datos completos del formulario único
                 $('#cartNote_final').val($('#cartNote').val())
                 var formData = $('#payment-form').serialize(); // Aseguramos usar el formulario principal
